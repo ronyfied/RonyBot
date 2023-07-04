@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 
 module.exports = {
-    guildOnly: true,
     data: new Discord.SlashCommandBuilder()
         .setName("8ball")
         .setDescription("🎱 Ask the magical 8ball anything!")

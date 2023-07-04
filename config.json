@@ -1,0 +1,19 @@
+{
+    "Channels": {
+        "ModmailCategory": "1125768159983570974",
+        "Transcripts": "1125817538501169272"
+    },
+    "Colors": {
+        "Gray": "#2b2d31",
+        "Success": "Green",
+        "Error": "Red"
+    },
+    "Emojis": {
+        "Tick": "🟢",
+        "Cross": "🔴"
+    },
+    "Strings": {
+        "ModmailTicketOpenMessage": "Hey there! The messages you send here *(including the one you just sent)* will be visible to all the moderators of **[guild]** server.\n\nYou'll get a message back when they reply!",
+        "ModmailTicketCloseMessage": "Your ticket has been closed from further use! Please don't hesitate to DM us again if you face any other problems. Use the button below to view a detailed transcript!"
+    }
+}

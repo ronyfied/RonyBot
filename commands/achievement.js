@@ -1,8 +1,7 @@
-const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
+const Discord = require("discord.js");
 
 module.exports = {
-    guildOnly: true,
-    data: new SlashCommandBuilder()
+    data: new Discord.SlashCommandBuilder()
         .setName("achievement")
         .setDescription("🏆 Create a minecraft achievement!")
         .addStringOption(option => option
@@ -13,7 +12,7 @@ module.exports = {
         ),
     async execute(interaction) {
         const name = interaction.options.getString("name");
-        const attachment = new AttachmentBuilder(`https://api.alexflipnote.dev/achievement?text=${name}`)
+        const attachment = new Discord.AttachmentBuilder(`https://api.alexflipnote.dev/achievement?text=${name}`)
             .setName(`${name}.png`);
 
         await interaction.reply({ files: [attachment] });

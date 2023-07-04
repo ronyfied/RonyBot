@@ -1,8 +1,7 @@
-const { SlashCommandBuilder, AttachmentBuilder } = require("discord.js");
+const Discord = require("discord.js");
 
 module.exports = {
-    guildOnly: true,
-    data: new SlashCommandBuilder()
+    data: new Discord.SlashCommandBuilder()
         .setName("scroll")
         .setDescription("📜 The scroll of truth...")
         
@@ -14,7 +13,7 @@ module.exports = {
         ),
     async execute(interaction) {
         const text = interaction.options.getString("text");
-        const attachment = new AttachmentBuilder(`https://api.alexflipnote.dev/scroll?text=${text}`)
+        const attachment = new Discord.AttachmentBuilder(`https://api.alexflipnote.dev/scroll?text=${text}`)
             .setName(`${text}.png`);
 
         await interaction.reply({ files: [attachment] });

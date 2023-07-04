@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 
 module.exports = {
-    guildOnly: true,
     data: new Discord.SlashCommandBuilder()
         .setName("post")
         .setDescription("💬 Post a message to a channel!")

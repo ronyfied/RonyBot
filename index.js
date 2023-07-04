@@ -1,9 +1,33 @@
 const Discord = require("discord.js");
 const chalk = require("chalk");
+const mongoose = require("mongoose");
 const fs = require("node:fs");
-const config = require("./config.json");
+require("dotenv/config");
 
-const client = new Discord.Client({ intents: [Discord.GatewayIntentBits.Guilds] });
+const client = new Discord.Client({
+    intents: [
+        Discord.GatewayIntentBits.Guilds,
+        Discord.GatewayIntentBits.GuildMessages,
+        Discord.GatewayIntentBits.MessageContent,
+        Discord.GatewayIntentBits.GuildMembers,
+        Discord.GatewayIntentBits.GuildPresences,
+        Discord.GatewayIntentBits.GuildVoiceStates,
+        Discord.GatewayIntentBits.DirectMessageReactions,
+        Discord.GatewayIntentBits.DirectMessages,
+        Discord.GatewayIntentBits.GuildMessageReactions
+    ],
+
+    partials: [
+        Discord.Partials.Message,
+        Discord.Partials.Channel,
+        Discord.Partials.Reaction
+    ],
+
+    allowedMentions: {
+        parse: ['users', 'roles'],
+        repliedUser: false
+    }
+});
 
 /* Event Handler */
 console.log(chalk.bold.yellowBright("Loading Events ..."));
@@ -13,17 +37,14 @@ for (const file of events) {
     client.on(event.name, (...args) => event.execute(...args));
 };
 
-/* Command Handler */
+// Slash Command Handler
 console.log(chalk.bold.yellowBright("Loading Commands ..."));
 client.commands = new Discord.Collection();
-const commandFolders = fs.readdirSync('./commands');
-for (const folder of commandFolders) {
-    const commandFiles = fs.readdirSync(`./commands/${folder}`).filter(file => file.endsWith('.js'));
-    for (const file of commandFiles) {
-        const command = require(`./commands/${folder}/${file}`);
-        client.commands.set(command.data.name, command);
-    };
-};
+const commands = fs.readdirSync("./commands").filter(file => file.endsWith(".js"));
+for (const file of commands) {
+    const command = require(`./commands/${file}`);
+    client.commands.set(command.data.name, command);
+}
 
 /* Anti Crash */
 process.on("unhandledRejection", (reason, p) => {
@@ -41,7 +62,15 @@ process.on("uncaughtExceptionMonitor", (err, origin) => {
     console.log(err?.stack, origin);
 });
 
+/* Connect to MongoDB */
+mongoose.connect(process.env.MONGODBURL, { useNewUrlParser: true, useUnifiedTopology: true })
+    .then(() => console.log(chalk.bold.greenBright("Connected to database")))
+    .catch(error => console.error(chalk.bold.redBright(error)));
+
 /* Client Login */
-client.login(config.token).then(() => {
-    console.log(chalk.bold.greenBright(`Logged in as ${client.user.tag}`));
+client.login(process.env.TOKEN).then(() => {
+    console.log(chalk.bold.greenBright(`Logged in as ${client.user.username}`));
+
+    client.user.setActivity("DMs", { type: Discord.ActivityType.Watching });
+    client.user.setStatus("dnd");
 });

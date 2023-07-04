@@ -1,7 +1,6 @@
 const Discord = require("discord.js");
 
 module.exports = {
-    guildOnly: true,
     data: new Discord.SlashCommandBuilder()
         .setName("meme")
         .setDescription("🔥 Get a random meme from the internet!"),
